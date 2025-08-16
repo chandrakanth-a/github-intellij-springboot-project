@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PublicApiGatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(PublicApiGatewayApplication.class, args);
-        //New code change 
+        //New code change in GitLab
+        //New code changes in Intellij
     }
 }
