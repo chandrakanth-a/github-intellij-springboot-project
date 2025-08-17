@@ -8,9 +8,7 @@
 # ENTRYPOINT ["java","-jar","demo.jar"]
 
 
-# ===========================
 # Stage 1: Build the JAR
-# ===========================
 FROM maven:3.8.5-openjdk-17 AS build
 WORKDIR /app
 
@@ -18,16 +16,14 @@ COPY pom.xml .
 RUN mvn dependency:go-offline
 
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package spring-boot:repackage -DskipTests
 
-# ===========================
 # Stage 2: Run the JAR
-# ===========================
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
-# Copy the exact built jar
 COPY --from=build /app/target/apigw-backend-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
+
