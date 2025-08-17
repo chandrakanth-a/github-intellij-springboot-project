@@ -1,4 +1,4 @@
-package Controller;  // <-- adjust this package name
+package com.example.apigw.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String redirectToSwagger() {
-        return "redirect:/swagger-ui/index.html";
+        return "redirect:/swagger-ui/index.html"; // if using springdoc
+        // return "redirect:/swagger-ui.html";   // if using springfox
     }
 }
