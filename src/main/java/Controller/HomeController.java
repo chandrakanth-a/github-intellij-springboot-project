@@ -1,4 +1,4 @@
-package com.yourproject.controller;  // <-- adjust this package name
+package Controller;  // <-- adjust this package name
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
