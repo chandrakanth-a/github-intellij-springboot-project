@@ -29,20 +29,17 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
-                        // Swagger & root should always be public
                         .requestMatchers(
-                                "/",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
-                                "/api/auth/**" // your login/register endpoints
+                                "/",                       // allow root redirect
+                                "/api/auth/**",            // allow login/register
+                                "/v3/api-docs/**",         // allow OpenAPI docs
+                                "/swagger-ui/**",          // allow Swagger UI resources
+                                "/swagger-ui.html"         // allow Swagger old path
                         ).permitAll()
-                        // all other endpoints need JWT
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-        //.....
     }
 }
