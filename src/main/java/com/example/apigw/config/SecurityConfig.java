@@ -30,11 +30,11 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/",                       // allow root redirect
-                                "/api/auth/**",            // allow login/register
-                                "/v3/api-docs/**",         // allow OpenAPI docs
-                                "/swagger-ui/**",          // allow Swagger UI resources
-                                "/swagger-ui.html"         // allow Swagger old path
+                                "/",                       // Swagger UI root
+                                "/api/auth/**",            // login/register
+                                "/v3/api-docs/**",         // OpenAPI docs
+                                "/swagger-ui/**",          // Swagger UI resources
+                                "/swagger-ui.html"         // Swagger UI (legacy path)
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
