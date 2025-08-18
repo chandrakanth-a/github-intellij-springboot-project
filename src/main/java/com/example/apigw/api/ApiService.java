@@ -14,7 +14,9 @@ import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -64,7 +66,8 @@ public class ApiService {
     }
 
     @Transactional
-    public FetchResultResponse fetchNow(User owner, UUID endpointId) {
+    public Map<String,String> fetchNow(User owner, UUID endpointId) {
+        Map<String,String> response = new HashMap<>();
         ApiEndpoint endpoint = endpointRepository.findByIdAndOwnerId(endpointId, owner.getId())
                 .orElseThrow(() -> new RuntimeException("Endpoint not found or not yours"));
         ExternalApiStrategy strategy = strategyFactory.resolve(endpoint.getUrl());
@@ -81,8 +84,11 @@ public class ApiService {
         r = resultRepository.save(r);
 
         String preview = res.body() == null ? "" : res.body().substring(0, Math.min(500, res.body().length()));
-        return new FetchResultResponse(r.getId(), endpoint.getId(), r.isSuccess(), r.getStatusCode(),
-                r.getContentType(), r.getDurationMs(), r.getFetchedAt(), preview);
+//        return new FetchResultResponse(r.getId(), endpoint.getId(), r.isSuccess(), r.getStatusCode(),
+//                r.getContentType(), r.getDurationMs(), r.getFetchedAt(), preview);
+//        response.put("id",r.getId().toString());
+        response.put("url",endpoint.getUrl());
+        return response;
     }
 
     @Transactional(readOnly = true)
