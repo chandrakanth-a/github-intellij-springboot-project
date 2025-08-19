@@ -1,0 +1,30 @@
+package com.example.apigw.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
+
+@Configuration
+public class DatabaseConfig {
+
+    @Value("${DATABASE_URL:}")
+    private String databaseUrl;
+
+    @PostConstruct
+    public void init() {
+        if (databaseUrl != null && databaseUrl.startsWith("postgres://")) {
+            // Example: postgres://user:password@host:5432/db
+            String jdbcUrl = databaseUrl.replace("postgres://", "jdbc:postgresql://") + "?sslmode=require";
+            System.setProperty("JDBC_DATABASE_URL", jdbcUrl);
+
+            // Extract username/password if not separately set
+            String userInfo = databaseUrl.split("@")[0].replace("postgres://", "");
+            String[] parts = userInfo.split(":");
+            if (parts.length == 2) {
+                System.setProperty("JDBC_DATABASE_USERNAME", parts[0]);
+                System.setProperty("JDBC_DATABASE_PASSWORD", parts[1]);
+            }
+        }
+    }
+}
