@@ -87,6 +87,7 @@ public class ApiService {
 //        return new FetchResultResponse(r.getId(), endpoint.getId(), r.isSuccess(), r.getStatusCode(),
 //                r.getContentType(), r.getDurationMs(), r.getFetchedAt(), preview);
         map.put("url",endpoint.getUrl());
+        map.put("name",endpoint.getName());
         return map;
     }
 
