@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -33,21 +34,21 @@ public class ApiController {
         return ResponseEntity.ok(apiService.listUrls(user));
     }
 
-    @PostMapping("/urls/{id}/fetch")
-    public ResponseEntity<FetchResultResponse> fetchNow(@AuthenticationPrincipal User user,
-                                                        @PathVariable("id") UUID id) {
+    @GetMapping("/urls/{id}/fetch")
+    public ResponseEntity<Map<String,String>> fetchNow(@AuthenticationPrincipal User user,
+                                                       @PathVariable("id") UUID id) {
         return ResponseEntity.ok(apiService.fetchNow(user, id));
     }
 
-    @GetMapping("/dashboard/results")
-    public ResponseEntity<List<FetchResultResponse>> listResults(@AuthenticationPrincipal User user,
-                                                                 @RequestParam(value = "endpointId", required = false) UUID endpointId) {
-        return ResponseEntity.ok(apiService.listResults(user, endpointId));
-    }
+//    @GetMapping("/dashboard/results")
+//    public ResponseEntity<List<FetchResultResponse>> listResults(@AuthenticationPrincipal User user,
+//                                                                 @RequestParam(value = "endpointId", required = false) UUID endpointId) {
+//        return ResponseEntity.ok(apiService.listResults(user, endpointId));
+//    }
 
-    @GetMapping("/results/{id}")
-    public ResponseEntity<FetchResultResponse> getResult(@AuthenticationPrincipal User user,
-                                                         @PathVariable("id") UUID id) {
-        return ResponseEntity.ok(apiService.getResult(user, id));
-    }
+//    @GetMapping("/results/{id}")
+//    public ResponseEntity<FetchResultResponse> getResult(@AuthenticationPrincipal User user,
+//                                                         @PathVariable("id") UUID id) {
+//        return ResponseEntity.ok(apiService.getResult(user, id));
+//    }
 }

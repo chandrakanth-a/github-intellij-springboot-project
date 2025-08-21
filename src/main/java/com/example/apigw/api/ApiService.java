@@ -14,7 +14,9 @@ import org.springframework.util.StringUtils;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -64,25 +66,28 @@ public class ApiService {
     }
 
     @Transactional
-    public FetchResultResponse fetchNow(User owner, UUID endpointId) {
+    public Map<String,String> fetchNow(User owner, UUID endpointId) {
+        Map<String,String> map = new HashMap<>();
         ApiEndpoint endpoint = endpointRepository.findByIdAndOwnerId(endpointId, owner.getId())
                 .orElseThrow(() -> new RuntimeException("Endpoint not found or not yours"));
         ExternalApiStrategy strategy = strategyFactory.resolve(endpoint.getUrl());
         ExternalApiResult res = strategy.fetch(endpoint.getUrl());
 
-        ApiFetchResult r = new ApiFetchResult();
-        r.setEndpoint(endpoint);
-        r.setOwner(owner);
-        r.setSuccess(res.success());
-        r.setStatusCode(res.statusCode());
-        r.setContentType(res.contentType());
-        r.setResponseBody(res.body());
-        r.setDurationMs(res.durationMs());
-        r = resultRepository.save(r);
+//        ApiFetchResult r = new ApiFetchResult();
+//        r.setEndpoint(endpoint);
+//        r.setOwner(owner);
+//        r.setSuccess(res.success());
+//        r.setStatusCode(res.statusCode());
+//        r.setContentType(res.contentType());
+//        r.setResponseBody(res.body());
+//        r.setDurationMs(res.durationMs());
+//        r = resultRepository.save(r);
 
-        String preview = res.body() == null ? "" : res.body().substring(0, Math.min(500, res.body().length()));
-        return new FetchResultResponse(r.getId(), endpoint.getId(), r.isSuccess(), r.getStatusCode(),
-                r.getContentType(), r.getDurationMs(), r.getFetchedAt(), preview);
+//        String preview = res.body() == null ? "" : res.body().substring(0, Math.min(500, res.body().length()));
+//        return new FetchResultResponse(r.getId(), endpoint.getId(), r.isSuccess(), r.getStatusCode(),
+//                r.getContentType(), r.getDurationMs(), r.getFetchedAt(), preview);
+        map.put("url",endpoint.getUrl());
+        return map;
     }
 
     @Transactional(readOnly = true)
